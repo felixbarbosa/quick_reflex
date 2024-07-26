@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:quick_reflex/menu.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
   runApp(const MyApp());
 }
 
