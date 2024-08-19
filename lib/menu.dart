@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:quick_reflex/controller/quick_reflex_controller.dart';
 import 'package:quick_reflex/pre_play.dart';
+import 'package:quick_reflex/show_records.dart';
 
 class Menu extends StatefulWidget {
   const Menu({super.key});
@@ -38,7 +39,13 @@ class _MenuState extends State<Menu> {
                   child: const Text("Jogar"),
                 ),
                 MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) {
+                        return const ShowRecords();
+                      },
+                    ));
+                  },
                   color: Colors.amber,
                   child: const Text("Recordes"),
                 )
