@@ -102,4 +102,39 @@ abstract class QuickReflexControllerBase with Store {
 
     return recordes;
   }
+
+  Future<Recorde?> getLastDataOfTable() async {
+    isLoading = true;
+    Recorde? recorde;
+    final db = await openMyDatabase();
+    List<Map> rows = await db.rawQuery('SELECT * FROM recorde');
+    Map<dynamic, dynamic> recordeDynamic = rows.last;
+
+    recorde = Recorde(
+        id: recordeDynamic["id"],
+        playerName: recordeDynamic["playerName"],
+        difficulty: Dificuldade.values.firstWhere(
+            (element) => element.name == recordeDynamic["difficulty"]),
+        hitPercentage: recordeDynamic["hitPercentage"],
+        averageTime: recordeDynamic["averageTime"],
+        velocity: recordeDynamic["velocity"]);
+
+    isLoading = false;
+
+    return recorde;
+  }
+
+  updateDatasInTable(Recorde newRecord) async {
+    isLoading = true;
+    final db = await openMyDatabase();
+    Recorde? recorde = await getLastDataOfTable();
+
+    if (recorde != null) {
+      await db.rawUpdate(
+          'UPDATE recorde SET hitPercentage = ?, averageTime = ? WHERE id = ?',
+          [newRecord.hitPercentage, newRecord.averageTime, recorde.id]);
+    }
+
+    isLoading = false;
+  }
 }

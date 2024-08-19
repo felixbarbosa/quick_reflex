@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:quick_reflex/controller/quick_reflex_controller.dart';
+import 'package:quick_reflex/enum/dificuldade.dart';
 import 'package:quick_reflex/model/quick_reflex.dart';
+import 'package:quick_reflex/model/recorde.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class Play extends StatefulWidget {
@@ -30,10 +33,12 @@ class _PlayState extends State<Play> {
   final int _timeMaxInvisible = 4000;
   int _timeMinInvisible = 1000;
   int _timeVisible = 5000;
+  late QuickReflexController _quickReflexController;
 
   @override
   void initState() {
     _quickReflex = widget.quickReflex;
+    _quickReflexController = QuickReflexController();
     _setVelocity();
     //Quando completar o _initCount chama o _showCircle
     _initCount().whenComplete(() => _showCircle());
@@ -101,6 +106,14 @@ class _PlayState extends State<Play> {
       sumTotalReaction = sumTotalReaction + e;
     }));
     double averageReaction = sumTotalReaction / _listPressTimes.length;
+
+    //Editar no banco os dados o ultimo registro
+    await _quickReflexController.updateDatasInTable(Recorde(
+        playerName: "",
+        difficulty: Dificuldade.avancado,
+        hitPercentage: hitPercent,
+        velocity: 5,
+        averageTime: averageReaction));
 
     if (!mounted) return;
 

@@ -12,46 +12,56 @@ class CardRecords extends StatelessWidget {
     return Container(
       width: 100,
       color: isTheBest ? Colors.amber : Colors.blue,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Column(
-                children: [
-                  const Text("Jogador"),
-                  Text(recorde.playerName),
-                ],
-              ),
-              const Spacer(),
-              Column(
-                children: [
-                  const Text("Acerto (%)"),
-                  Text("${recorde.hitPercentage}%"),
-                ],
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Row(
-            children: [
-              Column(
-                children: [
-                  const Text("Dificuldade"),
-                  Text(recorde.difficulty.name),
-                ],
-              ),
-              const Spacer(),
-              Column(
-                children: [
-                  const Text("Velociade"),
-                  Text(recorde.velocity.toString()),
-                ],
-              )
-            ],
-          )
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Column(
+                  children: [
+                    const Text("Jogador"),
+                    Text(recorde.playerName),
+                  ],
+                ),
+                const Spacer(),
+                Column(
+                  children: [
+                    const Text("Tempo de reação (sec)"),
+                    Text("${recorde.averageTime.toStringAsFixed(3)} segundos"),
+                  ],
+                ),
+                const Spacer(),
+                Column(
+                  children: [
+                    const Text("Acerto (%)"),
+                    Text("${recorde.hitPercentage.toStringAsFixed(2)}%"),
+                  ],
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Row(
+              children: [
+                Column(
+                  children: [
+                    const Text("Dificuldade"),
+                    Text(recorde.difficulty.name),
+                  ],
+                ),
+                const Spacer(),
+                Column(
+                  children: [
+                    const Text("Velociade"),
+                    Text(recorde.velocity.toString()),
+                  ],
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
