@@ -16,11 +16,22 @@ abstract class QuickReflexControllerBase with Store {
   bool isClickPlay = false;
 
   @observable
+  bool isLoading = false;
+
+  @observable
   int velocitySelected = 0;
+
+  @observable
+  List<Recorde> recordes = [];
 
   @action
   Future<void> setClickPlay(bool value) async {
     isClickPlay = value;
+  }
+
+  @action
+  Future<void> setIsLoading(bool value) async {
+    isLoading = value;
   }
 
   @action
@@ -56,6 +67,7 @@ abstract class QuickReflexControllerBase with Store {
   }
 
   insertDatasInTable(Recorde recorde) async {
+    isLoading = true;
     final db = await openMyDatabase();
     await db.insert(
       'recorde',
@@ -67,11 +79,13 @@ abstract class QuickReflexControllerBase with Store {
         'difficulty': recorde.difficulty.name
       },
     );
+    isLoading = false;
   }
 
   Future<List<Recorde>> readDatasOfTable() async {
+    isLoading = true;
     final db = await openMyDatabase();
-    List<Recorde> recordes = [];
+    recordes.clear();
     List<Map> rows = await db.rawQuery('SELECT * FROM recorde');
 
     await Future.wait(rows.map((e) async {
@@ -83,6 +97,8 @@ abstract class QuickReflexControllerBase with Store {
           averageTime: e["averageTime"],
           velocity: e["velocity"]));
     }));
+
+    isLoading = false;
 
     return recordes;
   }

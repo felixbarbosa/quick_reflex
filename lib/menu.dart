@@ -42,7 +42,9 @@ class _MenuState extends State<Menu> {
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) {
-                        return const ShowRecords();
+                        return ShowRecords(
+                          quickReflexController: _quickController,
+                        );
                       },
                     ));
                   },

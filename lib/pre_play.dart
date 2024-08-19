@@ -192,7 +192,7 @@ class _PrePlayState extends State<PrePlay> {
                   MaterialButton(
                     onPressed: () async {
                       await _insertData();
-                      /*var retorno =
+                      var retorno =
                           await Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) {
                           return Home(
@@ -207,7 +207,7 @@ class _PrePlayState extends State<PrePlay> {
 
                       if (retorno == true) {
                         _quickReflexController.setClickPlay(false);
-                      }*/
+                      }
                     },
                     color: Colors.amber,
                     child: const Text("Jogar"),

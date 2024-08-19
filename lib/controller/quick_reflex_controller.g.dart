@@ -41,6 +41,22 @@ mixin _$QuickReflexController on QuickReflexControllerBase, Store {
     });
   }
 
+  late final _$isLoadingAtom =
+      Atom(name: 'QuickReflexControllerBase.isLoading', context: context);
+
+  @override
+  bool get isLoading {
+    _$isLoadingAtom.reportRead();
+    return super.isLoading;
+  }
+
+  @override
+  set isLoading(bool value) {
+    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
+      super.isLoading = value;
+    });
+  }
+
   late final _$velocitySelectedAtom = Atom(
       name: 'QuickReflexControllerBase.velocitySelected', context: context);
 
@@ -57,12 +73,36 @@ mixin _$QuickReflexController on QuickReflexControllerBase, Store {
     });
   }
 
+  late final _$recordesAtom =
+      Atom(name: 'QuickReflexControllerBase.recordes', context: context);
+
+  @override
+  List<Recorde> get recordes {
+    _$recordesAtom.reportRead();
+    return super.recordes;
+  }
+
+  @override
+  set recordes(List<Recorde> value) {
+    _$recordesAtom.reportWrite(value, super.recordes, () {
+      super.recordes = value;
+    });
+  }
+
   late final _$setClickPlayAsyncAction =
       AsyncAction('QuickReflexControllerBase.setClickPlay', context: context);
 
   @override
   Future<void> setClickPlay(bool value) {
     return _$setClickPlayAsyncAction.run(() => super.setClickPlay(value));
+  }
+
+  late final _$setIsLoadingAsyncAction =
+      AsyncAction('QuickReflexControllerBase.setIsLoading', context: context);
+
+  @override
+  Future<void> setIsLoading(bool value) {
+    return _$setIsLoadingAsyncAction.run(() => super.setIsLoading(value));
   }
 
   late final _$setDificultSelectedAsyncAction = AsyncAction(
@@ -90,7 +130,9 @@ mixin _$QuickReflexController on QuickReflexControllerBase, Store {
     return '''
 dificultSelected: ${dificultSelected},
 isClickPlay: ${isClickPlay},
-velocitySelected: ${velocitySelected}
+isLoading: ${isLoading},
+velocitySelected: ${velocitySelected},
+recordes: ${recordes}
     ''';
   }
 }
