@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:quick_reflex/card_records.dart';
+import 'package:quick_reflex/pages/records/widgets/card_records.dart';
 import 'package:quick_reflex/controller/quick_reflex_controller.dart';
 import 'package:quick_reflex/model/recorde.dart';
 

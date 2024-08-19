@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:quick_reflex/controller/quick_reflex_controller.dart';
-import 'package:quick_reflex/pre_play.dart';
-import 'package:quick_reflex/show_records.dart';
+import 'package:quick_reflex/pages/play/pre_play.dart';
+import 'package:quick_reflex/pages/records/index/show_records.dart';
 
 class Menu extends StatefulWidget {
   const Menu({super.key});

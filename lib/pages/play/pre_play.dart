@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:quick_reflex/controller/quick_reflex_controller.dart';
 import 'package:quick_reflex/enum/dificuldade.dart';
-import 'package:quick_reflex/home.dart';
+import 'package:quick_reflex/pages/play/index/play.dart';
 import 'package:quick_reflex/model/quick_reflex.dart';
 import 'package:quick_reflex/model/recorde.dart';
 
@@ -195,7 +195,7 @@ class _PrePlayState extends State<PrePlay> {
                       var retorno =
                           await Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) {
-                          return Home(
+                          return Play(
                               quickReflex: QuickReflex(
                                   nomeJogador: _nomeCtrl.text,
                                   dificuldade: _dificuldadeSelected,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quick_reflex/menu.dart';
+import 'package:quick_reflex/pages/menu/menu.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {

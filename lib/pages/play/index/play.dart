@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:quick_reflex/model/quick_reflex.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
-class Home extends StatefulWidget {
+class Play extends StatefulWidget {
   final QuickReflex quickReflex;
-  const Home({super.key, required this.quickReflex});
+  const Play({super.key, required this.quickReflex});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<Play> createState() => _PlayState();
 }
 
-class _HomeState extends State<Home> {
+class _PlayState extends State<Play> {
   double _left = 0;
   double _top = 0;
   bool _buttonPress = false;
