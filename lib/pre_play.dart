@@ -5,6 +5,7 @@ import 'package:quick_reflex/controller/quick_reflex_controller.dart';
 import 'package:quick_reflex/enum/dificuldade.dart';
 import 'package:quick_reflex/home.dart';
 import 'package:quick_reflex/model/quick_reflex.dart';
+import 'package:quick_reflex/model/recorde.dart';
 
 class PrePlay extends StatefulWidget {
   final QuickReflexController quickReflexController;
@@ -24,6 +25,16 @@ class _PrePlayState extends State<PrePlay> {
   void initState() {
     _quickReflexController = widget.quickReflexController;
     super.initState();
+  }
+
+  _insertData() async {
+    await _quickReflexController.insertDatasInTable(Recorde(
+        playerName: _nomeCtrl.text,
+        difficulty: _dificuldadeSelected,
+        hitPercentage: 0,
+        averageTime: 0,
+        velocity: _quickReflexController.velocitySelected + 1));
+    await _quickReflexController.readDatasOfTable();
   }
 
   @override
@@ -180,7 +191,8 @@ class _PrePlayState extends State<PrePlay> {
                   ),
                   MaterialButton(
                     onPressed: () async {
-                      var retorno =
+                      await _insertData();
+                      /*var retorno =
                           await Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) {
                           return Home(
@@ -195,7 +207,7 @@ class _PrePlayState extends State<PrePlay> {
 
                       if (retorno == true) {
                         _quickReflexController.setClickPlay(false);
-                      }
+                      }*/
                     },
                     color: Colors.amber,
                     child: const Text("Jogar"),
