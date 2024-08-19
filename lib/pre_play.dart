@@ -27,6 +27,16 @@ class _PrePlayState extends State<PrePlay> {
     super.initState();
   }
 
+  _insertData() async {
+    await _quickReflexController.insertDatasInTable(Recorde(
+        playerName: _nomeCtrl.text,
+        difficulty: _dificuldadeSelected,
+        hitPercentage: 0,
+        averageTime: 0,
+        velocity: _quickReflexController.velocitySelected + 1));
+    await _quickReflexController.readDatasOfTable();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -181,15 +191,7 @@ class _PrePlayState extends State<PrePlay> {
                   ),
                   MaterialButton(
                     onPressed: () async {
-                      await _quickReflexController.openMyDatabase();
-                      await _quickReflexController.insertDatasInTable(Recorde(
-                          playerName: _nomeCtrl.text,
-                          difficulty: _dificuldadeSelected,
-                          hitPercentage: 0,
-                          averageTime: 0,
-                          velocity:
-                              _quickReflexController.velocitySelected + 1));
-                      await _quickReflexController.readDatasOfTable();
+                      await _insertData();
                       /*var retorno =
                           await Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) {

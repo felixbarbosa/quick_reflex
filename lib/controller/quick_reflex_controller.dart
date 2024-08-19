@@ -69,7 +69,7 @@ abstract class QuickReflexControllerBase with Store {
     );
   }
 
-  readDatasOfTable() async {
+  Future<List<Recorde>> readDatasOfTable() async {
     final db = await openMyDatabase();
     List<Recorde> recordes = [];
     List<Map> rows = await db.rawQuery('SELECT * FROM recorde');
@@ -83,5 +83,7 @@ abstract class QuickReflexControllerBase with Store {
           averageTime: e["averageTime"],
           velocity: e["velocity"]));
     }));
+
+    return recordes;
   }
 }
