@@ -29,44 +29,66 @@ class _ShowRecordsState extends State<ShowRecords> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Recordes"),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 17),
-          child: Observer(
-            builder: (context) {
-              if (_quickReflexController.isLoading) {
-                return const Center(
-                    child: CircularProgressIndicator(
-                  color: Colors.black,
-                ));
-              } else {
-                if (_quickReflexController.recordes.isEmpty) {
-                  return const Text("Nenhum recorde registrado...");
-                } else {
-                  return RefreshIndicator(
-                    onRefresh: _getDatas,
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) {
-                        return const SizedBox(
-                          height: 8,
-                        );
-                      },
-                      itemCount: _records.length,
-                      itemBuilder: (context, index) {
-                        return CardRecords(
-                          isTheBest: index == 0,
-                          recorde: _records[index],
-                        );
-                      },
-                    ),
-                  );
-                }
-              }
-            },
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+          appBar: AppBar(
+            title: const Text("Recordes"),
+            bottom: const TabBar(tabs: [
+              Tab(text: "Iniciante"),
+              Tab(text: "Intermediário"),
+              Tab(text: "Avançado"),
+              Tab(text: "Expert")
+            ]),
           ),
-        ));
+          body: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 17),
+            child: Observer(
+              builder: (context) {
+                if (_quickReflexController.isLoading) {
+                  return const Center(
+                      child: CircularProgressIndicator(
+                    color: Colors.black,
+                  ));
+                } else {
+                  if (_quickReflexController.recordes.isEmpty) {
+                    return const Text("Nenhum recorde registrado...");
+                  } else {
+                    return RefreshIndicator(
+                      onRefresh: _getDatas,
+                      child: TabBarView(
+                        children: [
+                          ListView.separated(
+                            separatorBuilder: (context, index) {
+                              return const SizedBox(
+                                height: 8,
+                              );
+                            },
+                            itemCount: _records.length,
+                            itemBuilder: (context, index) {
+                              return CardRecords(
+                                isTheBest: index == 0,
+                                recorde: _records[index],
+                              );
+                            },
+                          ),
+                          Container(
+                            child: const Text("Intermediario"),
+                          ),
+                          Container(
+                            child: const Text("Avançado"),
+                          ),
+                          Container(
+                            child: const Text("Expert"),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                }
+              },
+            ),
+          )),
+    );
   }
 }
