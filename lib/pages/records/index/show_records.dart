@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:quick_reflex/pages/records/widgets/card_records.dart';
 import 'package:quick_reflex/controller/quick_reflex_controller.dart';
 import 'package:quick_reflex/model/recorde.dart';
+import 'package:quick_reflex/pages/records/widgets/card_records.dart';
 
 class ShowRecords extends StatefulWidget {
   final QuickReflexController quickReflexController;
@@ -14,7 +14,11 @@ class ShowRecords extends StatefulWidget {
 
 class _ShowRecordsState extends State<ShowRecords> {
   late QuickReflexController _quickReflexController;
-  late List<Recorde> _records;
+  late List<Recorde> _allRecords;
+  List<Recorde> _inicianteRecords = [];
+  List<Recorde> _intermedRecords = [];
+  List<Recorde> _avancadoRecords = [];
+  List<Recorde> _expertRecords = [];
 
   @override
   void initState() {
@@ -24,7 +28,75 @@ class _ShowRecordsState extends State<ShowRecords> {
   }
 
   Future<void> _getDatas() async {
-    _records = await _quickReflexController.readDatasOfTable();
+    _allRecords = await _quickReflexController.readDatasOfTable();
+
+    //Separa todos os recordes por dificuldade
+    await Future.wait(_allRecords.map((e) async {
+      if (e.difficulty.name == "iniciante") {
+        _inicianteRecords.add(e);
+      } else if (e.difficulty.name == "intermediario") {
+        _intermedRecords.add(e);
+      } else if (e.difficulty.name == "avancado") {
+        _avancadoRecords.add(e);
+      } else {
+        _expertRecords.add(e);
+      }
+    }));
+
+    _inicianteRecords =
+        (await _orderList(_inicianteRecords)) ?? _inicianteRecords;
+    _intermedRecords = (await _orderList(_intermedRecords)) ?? _intermedRecords;
+    _avancadoRecords = (await _orderList(_avancadoRecords)) ?? _avancadoRecords;
+    _expertRecords = (await _orderList(_expertRecords)) ?? _expertRecords;
+  }
+
+  Future<List<Recorde>?> _orderList(List<Recorde> recordes) async {
+    //Ordenar os recordes de cada dificuldade
+    //Tempo de reação menor (Peso 1)
+    //Velocidade maior (Peso 2)
+    //Diferença entre acerto e velociade (Peso 3)
+
+    try {
+      //Ordenação por diferença entre acerto e velociade
+      recordes.sort((a, b) {
+        if ((a.hitPercentage + a.velocity) > (b.hitPercentage + b.velocity)) {
+          return -1;
+        } else if ((a.hitPercentage + a.velocity) ==
+            (b.hitPercentage + b.velocity)) {
+          if (a.averageTime < b.averageTime) {
+            return -1;
+          } else if (a.averageTime > b.averageTime) {
+            return 1;
+          } else {
+            return 0;
+          }
+        } else {
+          return 1;
+        }
+      });
+
+      return recordes;
+    } catch (erro) {
+      print("Erro no sort: $erro");
+      return null;
+    }
+  }
+
+  Widget _listRecords(List<Recorde> recordes) {
+    return ListView.separated(
+      separatorBuilder: (context, index) {
+        return const SizedBox(
+          height: 8,
+        );
+      },
+      itemCount: recordes.length,
+      itemBuilder: (context, index) {
+        return CardRecords(
+          isTheBest: index == 0,
+          recorde: recordes[index],
+        );
+      },
+    );
   }
 
   @override
@@ -58,29 +130,10 @@ class _ShowRecordsState extends State<ShowRecords> {
                       onRefresh: _getDatas,
                       child: TabBarView(
                         children: [
-                          ListView.separated(
-                            separatorBuilder: (context, index) {
-                              return const SizedBox(
-                                height: 8,
-                              );
-                            },
-                            itemCount: _records.length,
-                            itemBuilder: (context, index) {
-                              return CardRecords(
-                                isTheBest: index == 0,
-                                recorde: _records[index],
-                              );
-                            },
-                          ),
-                          Container(
-                            child: const Text("Intermediario"),
-                          ),
-                          Container(
-                            child: const Text("Avançado"),
-                          ),
-                          Container(
-                            child: const Text("Expert"),
-                          ),
+                          _listRecords(_inicianteRecords),
+                          _listRecords(_intermedRecords),
+                          _listRecords(_avancadoRecords),
+                          _listRecords(_expertRecords)
                         ],
                       ),
                     );
